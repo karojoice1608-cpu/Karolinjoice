@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screendex – Image Detail</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=2" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">Screendex</span>
+      <span class="brand-tag">AI-Powered</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Search</a>
+      <a href="/upload">Upload</a>
+      <a href="/gallery">Gallery</a>
+      <a href="/profile">Profile</a>
+      <a href="/admin">Admin</a>
+      <a href="/api/docs" target="_blank">API Docs</a>
+      <a href="/logout" style="color:#F44336;">Logout</a>
+    </div>
+  </nav>
+
+  <main class="detail-main">
+    <div class="detail-container" id="detailContainer">
+      <div class="loading">Loading image details...</div>
+    </div>
+  </main>
+
+  <script>
+    const IMAGE_ID = {{ image_id }};
+  </script>
+  <script src="/static/js/detail.js?v=3"></script>
+</body>
+</html>

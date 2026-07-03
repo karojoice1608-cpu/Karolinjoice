@@ -1,0 +1,23 @@
+
+**********************************************************************
+  Resource [93mpunkt[0m not found.
+  Please use the NLTK Downloader to obtain the resource:
+
+  [31m>>> import nltk
+  >>> nltk.download('punkt')
+  [0m
+  For more information see: https://www.nltk.org/data.html
+
+  Attempted to load [93mtokenizers/punkt/english.pickle[0m
+
+  Searched in:
+    - 'C:\\Users\\karol/nltk_data'
+    - 'C:\\Users\\karol\\AppData\\Local\\Programs\\Python\\Python311\\nltk_data'
+    - 'C:\\Users\\karol\\AppData\\Local\\Programs\\Python\\Python311\\share\\nltk_data'
+    - 'C:\\Users\\karol\\AppData\\Local\\Programs\\Python\\Python311\\lib\\nltk_data'
+    - 'C:\\Users\\karol\\AppData\\Roaming\\nltk_data'
+    - 'C:\\nltk_data'
+    - 'D:\\nltk_data'
+    - 'E:\\nltk_data'
+    - ''
+**********************************************************************

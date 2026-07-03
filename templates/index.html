@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screendex – AI Image Search</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=2" />
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>" />
+</head>
+<body>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">Screendex</span>
+      <span class="brand-tag">AI-Powered</span>
+    </div>
+    <div class="nav-links">
+      <a href="/" class="active">Search</a>
+      <a href="/upload">Upload</a>
+      <a href="/gallery">Gallery</a>
+      <a href="/profile">Profile</a>
+      <a href="/admin">Admin</a>
+      <a href="/api/docs" target="_blank">API Docs</a>
+      <a href="/logout" style="color:#F44336;">Logout</a>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero">
+    <div class="hero-content">
+      <h1 class="hero-title">
+        Search Your Images<br/>
+        <span class="gradient-text">by What's Inside Them</span>
+      </h1>
+      <p class="hero-subtitle">
+        Screendex uses OCR + Deep Learning to extract and index text from your
+        screenshots, receipts, and real-world photos — then lets you search
+        them instantly like a text document.
+      </p>
+
+      <!-- SEARCH BAR -->
+      <form class="search-form" id="searchForm">
+        <div class="search-bar-wrap">
+          <span class="search-icon">🔍</span>
+          <input
+            type="text"
+            id="searchInput"
+            class="search-input"
+            placeholder="Search: Python error, CNN architecture, receipt..."
+            autocomplete="off"
+          />
+          <div id="suggestions" class="suggestions"></div>
+        </div>
+        <div class="search-filters">
+          <select id="imageTypeFilter" class="filter-select">
+            <option value="">All Types</option>
+            <option value="born_digital">Born-Digital (Screenshots)</option>
+            <option value="scene_text">Scene Text (Real-World)</option>
+          </select>
+          <select id="categoryFilter" class="filter-select">
+            <option value="">All Categories</option>
+            <option value="Receipt">Receipt</option>
+            <option value="Code Snippet">Code Snippet</option>
+            <option value="Document">Document</option>
+            <option value="Social Media">Social Media</option>
+            <option value="Business Card">Business Card</option>
+            <option value="Lecture Note">Lecture Note</option>
+            <option value="Other">Other</option>
+          </select>
+          <label class="semantic-toggle-label" style="display: flex; align-items: center; gap: 0.5rem; color: #E0E0E0; font-size: 0.9rem; cursor: pointer;">
+            <input type="checkbox" id="semanticToggle" />
+            🧠 Semantic AI
+          </label>
+          <button type="submit" class="btn-primary">Search</button>
+        </div>
+      </form>
+
+      <!-- STATS BAR -->
+      <div class="stats-bar" id="statsBar">
+        <div class="stat-item"><span class="stat-num" id="statTotal">—</span> Images Indexed</div>
+        <div class="stat-item"><span class="stat-num" id="statKeywords">—</span> Keywords</div>
+        <div class="stat-item"><span class="stat-num" id="statDigital">—</span> Born-Digital</div>
+        <div class="stat-item"><span class="stat-num" id="statScene">—</span> Scene Text</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESULTS SECTION -->
+  <section class="results-section" id="resultsSection" style="display:none;">
+    <div class="results-header">
+      <h2 id="resultsTitle">Results</h2>
+      <span class="result-count" id="resultCount"></span>
+    </div>
+    <div class="results-grid" id="resultsGrid"></div>
+    <div class="pagination" id="pagination"></div>
+  </section>
+
+  <!-- EMPTY STATE -->
+  <section class="empty-state" id="emptyState" style="display:none;">
+    <div class="empty-icon">🔎</div>
+    <h3>No results found</h3>
+    <p>Try different keywords or <a href="/upload">upload more images</a>.</p>
+  </section>
+
+  <!-- FEATURE CARDS -->
+  <section class="features" id="featuresSection">
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📱</div>
+        <h3>Born-Digital Images</h3>
+        <p>Perfectly indexes screenshots, WhatsApp captures, digital receipts with clean machine-readable text.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📸</div>
+        <h3>Scene Text Images</h3>
+        <p>Handles real-world challenges — perspective distortion, varied lighting, background complexity.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3>AI-Powered OCR</h3>
+        <p>Deep learning CNN detection + EasyOCR extraction with confidence scoring per text region.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3>Instant Search</h3>
+        <p>PostgreSQL indexed retrieval delivers results in milliseconds across thousands of images.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>Screendex v1.0 | AI-Powered Image Indexing &amp; Search System</p>
+  </footer>
+
+  <script src="/static/js/search.js?v=3"></script>
+</body>
+</html>

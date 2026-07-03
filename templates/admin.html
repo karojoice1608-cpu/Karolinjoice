@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screendex – Admin Dashboard</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=4" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">Screendex</span>
+      <span class="brand-tag">AI-Powered</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Search</a>
+      <a href="/upload">Upload</a>
+      <a href="/gallery">Gallery</a>
+      <a href="/profile">Profile</a>
+      <a href="/admin" class="active">Admin</a>
+      <a href="/api/docs" target="_blank">API Docs</a>
+      <a href="/logout" style="color:#F44336;">Logout</a>
+    </div>
+  </nav>
+  
+  <main class="gallery-main" style="max-width: 1200px; margin: 0 auto; padding-top: 2rem;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+            <h1 style="font-size: 2rem; font-weight: 800;">Admin Dashboard: Bills Data</h1>
+            <p style="color: var(--text-muted);">Dynamically parses extracted OCR to find structured product & price tables.</p>
+        </div>
+        <button id="extractBtn" class="btn-primary btn-large">View Uploaded Bills</button>
+    </div>
+    
+    <div id="billsContainer">
+        <div class="empty-state">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🧾</div>
+            Click the button above to view the parsed receipt tables from your uploaded images.
+        </div>
+    </div>
+  </main>
+  
+  <script src="/static/js/admin.js?v=2"></script>
+</body>
+</html>

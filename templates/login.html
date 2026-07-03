@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sign In — Screendex</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:      #6C63FF;
+      --primary-dark: #5751d6;
+      --accent:       #FF6B6B;
+      --radius:       14px;
+    }
+
+    html, body {
+      height: 100%;
+      font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+    }
+
+    /* ── LAYOUT ──────────────────────────────────────── */
+    .login-wrapper {
+      display: flex;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ── LEFT PANEL ──────────────────────────────────── */
+    .login-visual {
+      flex: 1.1;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .visual-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('/static/login_bg.png');
+      background-size: cover;
+      background-position: center;
+      filter: brightness(0.75);
+    }
+
+    /* animated floating chips */
+    .chip-layer {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .chip {
+      position: absolute;
+      background: rgba(108, 99, 255, 0.2);
+      border: 1px solid rgba(108, 99, 255, 0.5);
+      color: rgba(255,255,255,0.75);
+      font-family: 'Inter', monospace;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 20px;
+      white-space: nowrap;
+      backdrop-filter: blur(6px);
+      animation: floatChip linear infinite;
+    }
+
+    @keyframes floatChip {
+      0%   { transform: translateY(110vh) rotate(-4deg); opacity: 0; }
+      10%  { opacity: 1; }
+      90%  { opacity: 0.9; }
+      100% { transform: translateY(-15vh) rotate(4deg); opacity: 0; }
+    }
+
+    /* scan-line overlay */
+    .scan-line {
+      position: absolute;
+      left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, rgba(108,99,255,0.7) 40%, rgba(255,107,107,0.7) 60%, transparent 100%);
+      animation: scanDown 5s ease-in-out infinite;
+      pointer-events: none;
+      box-shadow: 0 0 12px rgba(108,99,255,0.6);
+    }
+    @keyframes scanDown {
+      0%   { top: 0%;   opacity: 0; }
+      5%   { opacity: 1; }
+      95%  { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+
+    /* branding overlay */
+    .visual-content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+      color: #fff;
+    }
+
+    .visual-logo {
+      font-size: 3.5rem;
+      margin-bottom: 0.75rem;
+      filter: drop-shadow(0 0 20px rgba(108,99,255,0.8));
+      animation: pulse 3s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.08); }
+    }
+
+    .visual-title {
+      font-size: 2.4rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.5);
+    }
+
+    .visual-title span {
+      background: linear-gradient(135deg, #a78bfa, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .visual-tagline {
+      margin-top: 0.75rem;
+      font-size: 1rem;
+      opacity: 0.8;
+      font-weight: 400;
+      max-width: 340px;
+      line-height: 1.6;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.5);
+    }
+
+    .visual-pills {
+      margin-top: 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      max-width: 380px;
+    }
+
+    .visual-pill {
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.25);
+      color: rgba(255,255,255,0.9);
+      padding: 5px 14px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 500;
+      backdrop-filter: blur(8px);
+      letter-spacing: 0.2px;
+    }
+
+    /* ── RIGHT PANEL ─────────────────────────────────── */
+    .login-form-panel {
+      flex: 0 0 420px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      padding: 3rem 2.5rem;
+      box-shadow: -20px 0 60px rgba(0,0,0,0.12);
+      position: relative;
+      z-index: 5;
+    }
+
+    .form-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .form-logo {
+      font-size: 2.2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #1a1a2e;
+      letter-spacing: -0.3px;
+    }
+
+    .form-subtitle {
+      font-size: 0.9rem;
+      color: #718096;
+      margin-top: 0.35rem;
+    }
+
+    /* error banner */
+    .error-banner {
+      width: 100%;
+      background: #fff5f5;
+      border: 1px solid #feb2b2;
+      border-radius: 10px;
+      color: #c53030;
+      font-size: 0.875rem;
+      padding: 0.75rem 1rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* form fields */
+    .login-form { width: 100%; }
+
+    .field-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .field-label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 0.45rem;
+    }
+
+    .field-wrap {
+      position: relative;
+    }
+
+    .field-icon {
+      position: absolute;
+      left: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      pointer-events: none;
+    }
+
+    .field-input {
+      width: 100%;
+      background: #f8f9ff;
+      border: 2px solid #e8eaf6;
+      border-radius: 10px;
+      padding: 0.75rem 1rem;
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .field-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(108, 99, 255, 0.18);
+      background: #fff;
+    }
+
+    .field-input::placeholder { color: #a0aec0; }
+
+    .btn-login {
+      width: 100%;
+      padding: 0.9rem;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: #fff;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      transition: transform 0.15s, box-shadow 0.15s;
+      margin-top: 0.5rem;
+      letter-spacing: 0.2px;
+    }
+
+    .btn-login:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(108, 99, 255, 0.4);
+    }
+
+    .btn-login:active { transform: translateY(0); }
+
+    .form-footer {
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #a0aec0;
+    }
+
+    .form-footer a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      .login-visual { display: none; }
+      .login-form-panel { flex: 1; padding: 2rem 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="login-wrapper">
+
+    <!-- LEFT: Visual Panel -->
+    <div class="login-visual">
+      <div class="visual-bg"></div>
+      <div class="scan-line"></div>
+
+      <!-- floating keyword chips -->
+      <div class="chip-layer" id="chipLayer"></div>
+
+      <div class="visual-content">
+        <div class="visual-logo">⚡</div>
+        <h1 class="visual-title">Screen<span>dex</span></h1>
+        <p class="visual-tagline">
+          AI-powered image indexing & search. Extract text from screenshots,
+          receipts, and real-world photos — then find them instantly.
+        </p>
+        <div class="visual-pills">
+          <span class="visual-pill">🧠 EasyOCR</span>
+          <span class="visual-pill">📸 Scene Text</span>
+          <span class="visual-pill">📱 Born-Digital</span>
+          <span class="visual-pill">⚡ Instant Search</span>
+          <span class="visual-pill">🔍 Deep Learning</span>
+          <span class="visual-pill">📊 PostgreSQL</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Login Form -->
+    <div class="login-form-panel">
+      <div class="form-header">
+        <div class="form-logo">🔐</div>
+        <h2 class="form-title">Welcome back</h2>
+        <p class="form-subtitle">Sign in to your Screendex account</p>
+      </div>
+
+      {% if error %}
+      <div class="error-banner">
+        <span>⚠️</span>
+        <span>{{ error }}</span>
+      </div>
+      {% endif %}
+
+      <form class="login-form" method="POST" action="/login" id="loginForm">
+        <div class="field-group">
+          <label class="field-label" for="username">Username</label>
+          <div class="field-wrap">
+            <input
+              id="username"
+              name="username"
+              type="text"
+              class="field-input"
+              placeholder="Enter your username"
+              autocomplete="username"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="password">Password</label>
+          <div class="field-wrap">
+            <input
+              id="password"
+              name="password"
+              type="password"
+              class="field-input"
+              placeholder="Enter your password"
+              autocomplete="current-password"
+              required
+            />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">
+          Sign In →
+        </button>
+      </form>
+
+      <div class="form-footer">
+        Don't have an account? <a href="/signup">Sign Up</a><br/>
+        <span style="font-size:0.76rem;color:#cbd5e0;margin-top:0.5rem;display:block;">
+          Screendex v1.0
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Floating keyword chips
+    const keywords = [
+      'OCR', 'text extraction', 'deep learning', 'image search', 'CNN',
+      'scene text', 'receipt', 'screenshot', 'NLTK', 'keyword index',
+      'EasyOCR', 'born-digital', 'bounding box', 'confidence score',
+      'FastAPI', 'PostgreSQL', 'indexing', 'AI', 'vision'
+    ];
+
+    const layer = document.getElementById('chipLayer');
+    keywords.forEach((kw, i) => {
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.textContent = kw;
+
+      chip.style.left = (Math.random() * 85 + 2) + '%';
+      const duration = (18 + Math.random() * 20) + 's';
+      const delay    = (Math.random() * 20) + 's';
+      chip.style.animationDuration = duration;
+      chip.style.animationDelay   = '-' + delay; // start mid-way
+      layer.appendChild(chip);
+    });
+
+    // Disable button on submit to prevent double-clicks
+    document.getElementById('loginForm').addEventListener('submit', () => {
+      const btn = document.getElementById('loginBtn');
+      btn.textContent = 'Signing in…';
+      btn.disabled = true;
+    });
+  </script>
+</body>
+</html>

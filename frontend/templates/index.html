@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screendex — AI Image Search</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- ─── Header ─────────────────────────────────────────────────────────── -->
+  <header>
+    <div class="header-inner">
+      <div class="logo">
+        <span class="logo-screen">Screen</span><span class="logo-dex">dex</span>
+        <span class="logo-tag">AI Image Search</span>
+      </div>
+      <nav class="header-nav">
+        <button class="nav-btn active" data-view="search">Search</button>
+        <button class="nav-btn" data-view="library">Library</button>
+        <button class="nav-btn" data-view="upload">Upload</button>
+      </nav>
+      <div class="stats-pill" id="statsPill">
+        <span id="statsIndexed">—</span> images indexed
+      </div>
+    </div>
+  </header>
+
+  <!-- ─── Main ───────────────────────────────────────────────────────────── -->
+  <main>
+
+    <!-- SEARCH VIEW -->
+    <section class="view active" id="view-search">
+      <div class="search-hero">
+        <h1>Search your images<br /><span class="accent">by what's inside them.</span></h1>
+        <p class="hero-sub">Type any keyword — Screendex finds every image containing that text.</p>
+
+        <div class="search-box-wrap">
+          <div class="search-box">
+            <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+            </svg>
+            <input
+              type="text"
+              id="searchInput"
+              placeholder="e.g. CNN backpropagation, invoice total, CUDA error…"
+              autocomplete="off"
+            />
+            <div class="suggest-box" id="suggestBox"></div>
+          </div>
+
+          <div class="search-options">
+            <label class="opt-label">Mode
+              <select id="searchMode">
+                <option value="hybrid" selected>Hybrid (recommended)</option>
+                <option value="keyword">Keyword only</option>
+                <option value="semantic">Semantic only</option>
+              </select>
+            </label>
+            <label class="opt-label">Type
+              <select id="searchType">
+                <option value="">All</option>
+                <option value="born_digital">Born-Digital</option>
+                <option value="scene_text">Scene Text</option>
+              </select>
+            </label>
+            <label class="opt-label">Min confidence
+              <select id="searchConf">
+                <option value="0">Any</option>
+                <option value="0.5">≥ 50%</option>
+                <option value="0.7">≥ 70%</option>
+                <option value="0.85">≥ 85%</option>
+              </select>
+            </label>
+            <button class="search-btn" id="searchBtn">Search</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="results-section" id="resultsSection" style="display:none">
+        <div class="results-meta" id="resultsMeta"></div>
+        <div class="results-grid" id="resultsGrid"></div>
+      </div>
+    </section>
+
+    <!-- LIBRARY VIEW -->
+    <section class="view" id="view-library">
+      <div class="view-header">
+        <h2>Image Library</h2>
+        <div class="filter-bar">
+          <select id="libStatusFilter">
+            <option value="">All statuses</option>
+            <option value="done">Indexed</option>
+            <option value="pending">Pending</option>
+            <option value="processing">Processing</option>
+            <option value="failed">Failed</option>
+          </select>
+          <select id="libTypeFilter">
+            <option value="">All types</option>
+            <option value="born_digital">Born-Digital</option>
+            <option value="scene_text">Scene Text</option>
+          </select>
+          <button class="sec-btn" id="libRefreshBtn">Refresh</button>
+        </div>
+      </div>
+      <div class="lib-grid" id="libGrid"></div>
+      <div class="pagination" id="libPagination"></div>
+    </section>
+
+    <!-- UPLOAD VIEW -->
+    <section class="view" id="view-upload">
+      <div class="view-header">
+        <h2>Upload Images</h2>
+        <p class="view-sub">Drag &amp; drop or click to select. Supports JPEG, PNG, WEBP, BMP, TIFF. Max 20 MB per file, up to 50 files per batch.</p>
+      </div>
+
+      <div class="dropzone" id="dropzone">
+        <div class="drop-inner">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" class="drop-icon">
+            <rect x="8" y="16" width="48" height="36" rx="4" stroke="currentColor" stroke-width="2"/>
+            <circle cx="22" cy="28" r="4" stroke="currentColor" stroke-width="2"/>
+            <path d="M8 44l14-12 8 8 8-10 18 14" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
+            <path d="M32 8v16M26 12l6-6 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <p class="drop-text">Drop images here</p>
+          <p class="drop-sub">or</p>
+          <button class="browse-btn" id="browseBtn">Browse files</button>
+          <input type="file" id="fileInput" multiple accept="image/*" style="display:none" />
+        </div>
+      </div>
+
+      <div class="upload-queue" id="uploadQueue"></div>
+      <div class="upload-actions" id="uploadActions" style="display:none">
+        <button class="primary-btn" id="uploadSubmitBtn">Upload &amp; Index</button>
+        <button class="ghost-btn" id="uploadClearBtn">Clear</button>
+      </div>
+      <div class="upload-log" id="uploadLog"></div>
+    </section>
+
+  </main>
+
+  <!-- ─── Image Detail Modal ─────────────────────────────────────────────── -->
+  <div class="modal-overlay" id="modalOverlay" style="display:none">
+    <div class="modal" id="modal">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <div class="modal-body" id="modalBody"></div>
+    </div>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

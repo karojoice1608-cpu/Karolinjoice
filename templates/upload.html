@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Screendex – Upload Images</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=2" />
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-icon">⚡</span>
+      <span class="brand-name">Screendex</span>
+      <span class="brand-tag">AI-Powered</span>
+    </div>
+    <div class="nav-links">
+      <a href="/">Search</a>
+      <a href="/upload" class="active">Upload</a>
+      <a href="/gallery">Gallery</a>
+      <a href="/profile">Profile</a>
+      <a href="/admin">Admin</a>
+      <a href="/api/docs" target="_blank">API Docs</a>
+      <a href="/logout" style="color:#F44336;">Logout</a>
+    </div>
+  </nav>
+
+  <main class="upload-main">
+    <div class="upload-container">
+      <h1 class="page-title">Upload Images</h1>
+      <p class="page-subtitle">Upload screenshots, receipts, or photos. Screendex will automatically extract and index all text using AI-powered OCR.</p>
+
+      <!-- DROP ZONE -->
+      <div class="drop-zone" id="dropZone">
+        <div class="drop-icon">📂</div>
+        <h3>Drag &amp; Drop images here</h3>
+        <p>or click to browse files</p>
+        <p class="drop-hint">Supports: JPG, PNG, WEBP, BMP, TIFF (max 10MB each)</p>
+        <input type="file" id="fileInput" multiple accept=".jpg,.jpeg,.png,.webp,.bmp,.tiff,.gif" style="display:none;" />
+        <button class="btn-outline" onclick="document.getElementById('fileInput').click()">Browse Files</button>
+      </div>
+
+      <!-- IMAGE TYPE SELECTOR -->
+      <div class="type-selector">
+        <label class="type-label">Image Type:</label>
+        <div class="type-options">
+          <label class="type-option">
+            <input type="radio" name="imageType" value="born_digital" checked />
+            <span class="type-card">
+              <span class="type-icon">📱</span>
+              <span class="type-name">Born-Digital</span>
+              <span class="type-desc">Screenshots, WhatsApp, digital receipts</span>
+            </span>
+          </label>
+          <label class="type-option">
+            <input type="radio" name="imageType" value="scene_text" />
+            <span class="type-card">
+              <span class="type-icon">📸</span>
+              <span class="type-name">Scene Text</span>
+              <span class="type-desc">Real-world photos, signboards, printed docs</span>
+            </span>
+          </label>
+        </div>
+      </div>
+
+      <!-- PREVIEW GRID -->
+      <div class="preview-grid" id="previewGrid"></div>
+
+      <!-- UPLOAD BUTTON -->
+      <div class="upload-actions" id="uploadActions" style="display:none;">
+        <span id="selectedCount" class="selected-info"></span>
+        <button class="btn-primary btn-large" id="uploadBtn">
+          ⚡ Start OCR Processing
+        </button>
+        <button class="btn-outline" id="clearBtn">Clear All</button>
+      </div>
+
+      <!-- PROGRESS SECTION -->
+      <div class="progress-section" id="progressSection" style="display:none;">
+        <h3>Processing Pipeline</h3>
+        <div class="pipeline-steps" id="pipelineSteps">
+          <div class="step" data-step="upload">
+            <span class="step-icon">📤</span>
+            <span>Upload</span>
+            <span class="step-status">⏳</span>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step" data-step="ocr">
+            <span class="step-icon">🔍</span>
+            <span>Text Detection</span>
+            <span class="step-status">⏳</span>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step" data-step="nlp">
+            <span class="step-icon">🧠</span>
+            <span>NLP Processing</span>
+            <span class="step-status">⏳</span>
+          </div>
+          <div class="step-arrow">→</div>
+          <div class="step" data-step="index">
+            <span class="step-icon">📊</span>
+            <span>DB Indexing</span>
+            <span class="step-status">⏳</span>
+          </div>
+        </div>
+        <div class="upload-results" id="uploadResults"></div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/static/js/upload.js?v=2"></script>
+</body>
+</html>
